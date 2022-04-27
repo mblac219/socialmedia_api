@@ -6,7 +6,7 @@ const ObjectId = require('mongodb').ObjectId;
 const app = express();
 const port = 3001;
 
-const connectionStringURI = `mongodb://localhost:27017/inventoryDB`;
+const connectionStringURI = `mongodb://localhost/socialmedia_api`;
 
 let db;
 

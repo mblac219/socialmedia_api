@@ -14,17 +14,20 @@ const userSchema = new Schema(
       type: String,
       require: true,
       unique: true,
+      match: [/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/, "Must be a valid email address" ]
     },
-    thoughts: {
+    thoughts: [
+      {
       type: Boolean,
-      default: true,
-    },
-    description: {
-      type: String,
-      minLength: 15,
-      maxLength: 500,
-    },
-    tags: [Tag],
+      ref: "Thought",
+      },
+    ],
+    friends: [
+      {
+      type: Schema.Types.ObjectId,
+      ref: "User",
+      },
+    ],
   },
   {
     toJSON: {
@@ -35,14 +38,14 @@ const userSchema = new Schema(
 );
 
 // Create a virtual property `getTags` that gets the amount of tags associated with an application
-applicationSchema
-  .virtual('getResponses')
+userSchema
+  .virtual("friendCount")
   // Getter
   .get(function () {
-    return this.tags.length;
+    return this.friends.length;
   });
 
 // Initialize our Application model
-const Application = model('application', applicationSchema);
+const User = model("User", userSchema);
 
-module.exports = Application;
+module.exports = User;
